@@ -5,36 +5,89 @@
 #include <iterator>
 #include <deque>
 using namespace std;
-bool is_plindrome(string s, int low, int high);
-string longestPalindrome(string s) {
-	int start, end;
-	start = end = 0;
-	for (int i = 0; i < s.size(); i++)
+bool is_space(char c)
+{
+	return c == ' ';
+}
+bool is_valid(char c)
+{
+	string valid_str = "0123456789+-";
+	if (valid_str.find(c) != string::npos)
+		return true;
+	else
+		return false;
+}
+bool is_number(char c)
+{
+	string numbers = "0123456789";
+	if (numbers.find(c) != string::npos)
+		return true;
+	else
+		return false;
+}
+int myAtoi(string str) {
+	int rev = 0;
+	int symbol = false;    //正数为false,负数为true;
+	int npo = false;       //判断是否找到第一个非空字符
+	int pos = 0;
+	for (int i = 0; i < str.size(); i++)
 	{
-		for (int j = i; j < s.size(); j++)
+		if (npo)
 		{
-			if (is_plindrome(s, i, j))
+			if (is_number(str[i]))
 			{
-				if ((j - i) > (end - start))
+				pos = str[i] - '0';
+				if (!symbol)
 				{
-					end = j;
-					start = i;
+					if ((rev > INT_MAX / 10) || (rev == INT_MAX / 10 && pos > 7))
+					{
+						rev = INT_MAX;
+						break;
+					}
 				}
+				else
+				{
+					if ((rev > INT_MAX / 10) || (rev == INT_MAX / 10 || pos > 8))
+					{
+						rev = INT_MAX + 1;
+						break;
+					}
+				}
+				rev = rev * 10 + pos;
+			}
+			else
+			{
+				continue;
+			}
+		}
+		else
+		{
+			if (is_space(str[i]))        //如果第一个是空格，则跳过
+				continue;
+			else if (is_valid(str[i]))       //如果是有效的，则读取
+			{
+				npo = true;
+				if (str[i] == '+')
+					symbol = false;
+				else if (str[i] == '-')
+					symbol = true;
+				else
+				{
+					pos = str[i] - '0';
+					rev = pos;
+				}
+			}
+			else    //如果第一个是非数字和符号，则返回0
+			{
+				break;
 			}
 		}
 	}
-	return string(&s[start], &s[end + 1]);
-}
-bool is_plindrome(string s, int low, int high)
-{
-	if (low==high) return true;
-	else if (high == low + 1) return s[low] == s[low + 1];
-	else
-	return is_plindrome(s, low - 1, high - 1) && (s[low] == s[high]);
+	return rev;
 }
 int main()
 {
-	string str = "aba";
-	std::cout << longestPalindrome(str);
+	string in ="4193 with words";
+	cout<<myAtoi(in);
 	return 0;
 }
