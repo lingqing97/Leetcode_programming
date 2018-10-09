@@ -1,4 +1,5 @@
 ﻿  test.cpp
-d:\360downloads\github客户端code\leetcode_programming\test\test\test.cpp(33): warning C4018: “<”: 有符号/无符号不匹配
-d:\360downloads\github客户端code\leetcode_programming\test\test\test.cpp(52): warning C4307: “+”: 整型常量溢出
+d:\360downloads\github客户端code\leetcode_programming\test\test\test.cpp(32): warning C4018: “<”: 有符号/无符号不匹配
+d:\360downloads\github客户端code\leetcode_programming\test\test\test.cpp(34): warning C4018: “<”: 有符号/无符号不匹配
+d:\360downloads\github客户端code\leetcode_programming\test\test\test.cpp(35): warning C4018: “<”: 有符号/无符号不匹配
   Test.vcxproj -> D:\360Downloads\GitHub客户端code\Leetcode_programming\Test\Debug\Test.exe

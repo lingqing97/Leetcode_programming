@@ -4,90 +4,60 @@
 #include <algorithm>
 #include <iterator>
 #include <deque>
+#include <set>
 using namespace std;
-bool is_space(char c)
+bool isfind(vector<int>& it1, vector<vector<int>> v)
 {
-	return c == ' ';
-}
-bool is_valid(char c)
-{
-	string valid_str = "0123456789+-";
-	if (valid_str.find(c) != string::npos)
-		return true;
-	else
-		return false;
-}
-bool is_number(char c)
-{
-	string numbers = "0123456789";
-	if (numbers.find(c) != string::npos)
-		return true;
-	else
-		return false;
-}
-int myAtoi(string str) {
-	int rev = 0;
-	int symbol = false;    //正数为false,负数为true;
-	int npo = false;       //判断是否找到第一个非空字符
-	int pos = 0;
-	for (int i = 0; i < str.size(); i++)
+	sort(it1.begin(), it1.end());
+	bool result = false;
+	if (v.empty()) return false;
+	for (auto x : v)
 	{
-		if (npo)
-		{
-			if (is_number(str[i]))
-			{
-				pos = str[i] - '0';
-				if (!symbol)
-				{
-					if ((rev > INT_MAX / 10) || (rev == INT_MAX / 10 && pos > 7))
-					{
-						rev = INT_MAX;
-						break;
-					}
-				}
-				else
-				{
-					if ((rev > INT_MAX / 10) || (rev == INT_MAX / 10 || pos > 8))
-					{
-						rev = INT_MAX + 1;
-						break;
-					}
-				}
-				rev = rev * 10 + pos;
-			}
-			else
-			{
-				continue;
-			}
-		}
-		else
-		{
-			if (is_space(str[i]))        //如果第一个是空格，则跳过
-				continue;
-			else if (is_valid(str[i]))       //如果是有效的，则读取
-			{
-				npo = true;
-				if (str[i] == '+')
-					symbol = false;
-				else if (str[i] == '-')
-					symbol = true;
-				else
-				{
-					pos = str[i] - '0';
-					rev = pos;
-				}
-			}
-			else    //如果第一个是非数字和符号，则返回0
-			{
+		sort(x.begin(), x.end());
+		int i = 0;
+		for (; i < 3; i++)
+			if (it1[i] != x[i])
 				break;
-			}
-		}
+		if (i < 3) continue;
+		return true;
 	}
-	return rev;
+	return false;
+}
+vector<vector<int>> threeSum(vector<int>& nums) 
+{
+	vector<vector<int>> result;
+	if (nums.empty()) return result;
+	if (nums.size() < 3) return result;
+	vector<int> v;
+	for (int i = 0; i < (nums.size() - 2); i++)
+	{
+		for (int j = i + 1; j < (nums.size() - 1); j++)
+			for (int z = j + 1; z < nums.size(); z++)
+			{
+				if ((nums[i] + nums[j] + nums[z]) == 0)
+				{
+					v.push_back(nums[i]);
+					v.push_back(nums[j]);
+					v.push_back(nums[z]);
+					if(!isfind(v,result))
+						result.push_back(v);
+					v.clear();
+				}
+			}
+	}
+	return result;
+
 }
 int main()
 {
-	string in ="4193 with words";
-	cout<<myAtoi(in);
+	vector<int> nums = { -1,0,1,2,-1,-4 };
+	vector<vector<int>> result = threeSum(nums);
+	if(!result.empty())
+	for (auto x : result)
+	{
+		for (auto y : x)
+			cout << y << " ";
+		cout << endl;
+	}
 	return 0;
 }
