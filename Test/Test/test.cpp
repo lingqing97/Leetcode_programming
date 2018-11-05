@@ -4,47 +4,66 @@
 #include <string>
 	using namespace std;
 
-	string countAndSay(int n) {
-		string temp = "";
-		string result = "1";
-		if (n == 1) return result;
-		for (int i = 1; i < n; i++)
+	class Solution {
+	public:
+		vector<vector<string>> solveNQueens(int n) {
+			vector<vector<string>> result;
+			int k = 0;
+			vector<int> x(n);
+			trackback(result, k, x, n);
+			return result;
+		}
+	private:
+		bool bound(int k, const vector<int>& x)
 		{
-			for (int j = 0; j < result.size(); j++)
+			for (int i = 0; i < k; i++)
 			{
-				if (result[j] == '2')
+				if ((x[i] == x[k]) || (abs(i - k) == abs(x[i] - x[k])))
+					return false;
+			}
+			return true;
+		}
+		void trackback(vector<vector<string>>& result, int k, vector<int>& x, const int n)
+		{
+			if (k >= n)
+			{
+				vector<string> temp;
+				for (int i = 0; i < n; i++)
 				{
-					j++;
-					int count = 1;
-					while (j < result.size() && result[j] == '2')
+					string temp_str = "";
+					for (int j = 0; j < n; j++)
 					{
-						count++;
-						j++;
+						if (j == x[i])
+							temp_str += "Q";
+						else
+							temp_str += ".";
 					}
-					char temp_count = count + '1' - 1;
-					temp += temp_count;
-					temp += '2';
+					temp.push_back(temp_str);
 				}
-				if (result[j] == '1')
+				result.push_back(temp);
+				return;
+			}
+			else
+			{
+				for (int i = 0; i < n; i++)
 				{
-					j++;
-					int count = 1;
-					while (j < result.size() && result[j] == '1')
-					{
-						count++;
-						j++;
-					}
-					char temp_count = count + '1' - 1;
-					temp += temp_count;
-					temp += '1';
+					int temp = x[k];
+					x[k] = i;
+					if (bound(k, x))
+						trackback(result, k + 1, x, n);
+					x[k] = temp;
 				}
 			}
-			result = temp;
-			temp = "";
 		}
-		return result;
-	}
+	};
 	int main(int argc, char** argv)
 	{
-		cout<<countAndSay(5);
+		Solution s;
+		vector<vector<string>> result = s.solveNQueens(4);
+		for (int i = 0; i < result.size(); i++)
+		{
+			for (int j = 0; j < result[0].size(); j++)
+				cout << result[i][j];
+			cout << endl;
+		}
 	}
