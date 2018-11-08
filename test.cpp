@@ -1,60 +1,35 @@
 #include <iostream>
-   string add(string str1,string str2)
-   {
-       int num1;
-       int num2;
-       string result="";
-       bool carry_bit=false;
-       int i;
-       for(i=0;i<(int size=(str1.size()>str2.size()?str2.size():str1.size());i++)
-           {
-               num1=atoi(str1[i]);
-               num2=atoi(str2[i]);
-               if(!carry_bit)
-               result+=to_string((num1+num2)%10);
-               else
-               result+=to_string((num1+num2+1)%10);
-               if((num1+num2)/10!=0)
-               carry_bit=true;
-               else
-               carry_bit=false;
-           }
-        if(str1.size()==str2.size())
-        	if(carry_bit)
-        	result+="1";
-        if(str1.size()!=str2.size())
-        	{
-        		if(i==str1.size())
-        		{
-        			if(carry_bit)
-        			{
-        				while(i<str2.size())
-        				{
-	        				num2=atoi(str2[i])
-	        				result+=to_string((num2+1)%10);
-	        				if((num2+10)/10!=0)
-	        				carry_bit=true;
-	        				else
-	        				carry_bit=false;
-							i++;	
-						} 
-					}
-				}
-				else
-				{
-					
-				}
-			}
-   }
-int pow(int a,int b)
+#include <string>
+using namespace std; 
+string addBinary(string a, string b) {
+    string result;
+    string aa=(a.size()>b.size())?a:b;
+    string bb=(a.size()<=b.size())?a:b;
+    int n=aa.size()-1;
+    int before=0;
+    int i=n;
+    int j=bb.size()-1;
+    while(i>=(-1))
+    {
+        int temp_1=((i>=0)?(aa[i]-'0'):0);
+        int temp_2=((j>=0)?(bb[j]-'0'):0);
+        int sum=(temp_1+temp_2+before)%2;
+        int before=(temp_1+temp_2+before)/2;
+        cout<<char(sum+'0')<<endl;
+    	result+=char(sum+'0');
+    	i--;
+    	j--;
+    }
+    cout<<result;
+    string ret="";
+    for(int i=result.size()-1;i>=0;i--)
+        ret+=result[i];
+    return ret;
+    }
+int main(int argc,char** argv)
 {
-    int result=1;
-    for(int i=1;i<=b;i++)
-    result*=a;
-    return result;
-}
-int main()
-{
-	string str1="123";
-	string str2="345";
+	string a="11";
+	string b="1";
+	cout<<addBinary(a,b);
+	return 0;
 }
