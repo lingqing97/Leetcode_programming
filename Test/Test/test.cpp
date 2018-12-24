@@ -1,55 +1,37 @@
 #include <iostream>
 #include <vector>
-#include <set>
-#include <string>
-	using namespace std;
+#include <algorithm>
+#include <cstdio>
+using namespace std;
 
-
-	struct ListNode {
-		int val;
-		ListNode *next;
-		ListNode(int x) : val(x), next(NULL) {}
-	};
-
-	ListNode* rotateRight(ListNode* head, int k) {
-		int count = 1;
-		ListNode* first = head;
-		while (count <= k)
-		{
-			ListNode* ptr = head;
-			int temp = first->val;
-			for (; ptr != nullptr; ptr = ptr->next)
-			{
-				if (ptr->next != nullptr)
-				{
-					int temp_2 = ptr->next->val;
-					ptr->next->val = temp;
-					temp = temp_2;
-				}
-				else
-				{
-					first->val = temp;
-					count++;
-
-				}
-			}
-		}
-		return first;
-	}
-	int main(int argc, char** argv)
+int merge(const vector<int>& v, int i, int j)
+{
+	if ((j - i) == 1) return v[j] - v[i];
+	int mid = (i + j) / 2;
+	int left_min = merge(v, i, mid);
+	int right_min = merge(v, mid, j);
+	/*	vector<int> tempv;
+		tempv.push_back(left_min);
+		tempv.push_back(right_min);
+		tempv.push_back(v[mid+1]-v[mid]);
+		tempv.push_back(v[mid]-v[mid-1])
+		sort(tempv.begin(),tempv.end());*/
+		//return tempv[0];
+	return left_min > right_min ? right_min : left_min;
+}
+int main()
+{
+	int n;
+	cin >> n;
+	vector<int> v;
+	int temp = 0;
+	for (int i = 0; i < n; i++)
 	{
-		ListNode begin(1);
-		ListNode mid(2);
-		ListNode last(3);
-		begin.val = 1;
-		mid.val = 2;
-		last.val = 3;
-		begin.next = &mid;
-		mid.next = &last;
-		last.next = nullptr;
-		ListNode* result = rotateRight(&begin,2);
-		for (ListNode* ptr = &begin; ptr != nullptr; ptr = ptr->next)
-		{
-			cout << ptr->val<<" ";
-		}
+		cin >> temp;
+		v.push_back(temp);
 	}
+	sort(v.begin(), v.end());
+	cout << merge(v, 0, v.size()-1);
+	getchar();
+	return 0;
+}
